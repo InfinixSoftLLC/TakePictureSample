@@ -6,13 +6,14 @@ import android.arch.lifecycle.MutableLiveData
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.library.R
 import com.example.library.utils.REQUEST_CODE_CHOOSE_PICTURE
@@ -25,11 +26,13 @@ abstract class TakePictureViewModel : BaseViewModel() {
 
     private val bitmapLiveData: MutableLiveData<Bitmap> = MutableLiveData()
 
-    private val target = object : SimpleTarget<Bitmap>() {
+    private val target = object : CustomTarget<Bitmap>() {
         override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
             bitmap = resource
             bitmapLiveData.postValue(bitmap)
         }
+
+        override fun onLoadCleared(placeholder: Drawable?) {}
     }
 
     fun getImageLiveData() = bitmapLiveData
